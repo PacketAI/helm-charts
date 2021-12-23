@@ -9,7 +9,7 @@ global:
   kubeStateMetrics:
     # if enabled we will use new kube-state-metrics deployed with this chart.
     # otherwise we will use url provided for existing kube-state-metrics
-    enabled: false
+    enabled: true
     url: ""
 
 packetai:
