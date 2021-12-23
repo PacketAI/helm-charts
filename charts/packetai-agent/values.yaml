@@ -24,7 +24,7 @@ packetai:
   cluster:
     image:
       repository: public.ecr.aws/packetai/packetai-agent-k8s-ds
-      pullPolicy: IfNotPresent
+      pullPolicy: Always
       tag: latest
     resources:
       limits:
