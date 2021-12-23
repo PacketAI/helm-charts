@@ -1,0 +1,66 @@
+# Default values for packetai-agent.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+
+#kube-state-metrics customization values goes here
+kube-state-metrics: {}
+global:
+  kubeStateMetrics:
+    # if enabled we will use new kube-state-metrics deployed with this chart.
+    # otherwise we will use url provided for existing kube-state-metrics
+    enabled: false
+    url: ""
+
+packetai:
+  imagePullSecrets: []
+  # packetai agent to collect cluster level metrics (deployments, volumes, replicaset, pods, containers, sts etc..)
+  xPaiToken: ""
+  paiApiKey: ""
+  apiUrl: ""
+  k8sProxyEndPoint: "localhost:10249"
+  clusterName: ""
+
+  cluster:
+    image:
+      repository: public.ecr.aws/packetai/packetai-agent-k8s-ds
+      pullPolicy: IfNotPresent
+      tag: latest
+    resources:
+      limits:
+        memory: 600Mi
+      requests:
+        cpu: 300m
+        memory: 300Mi
+    nodeSelector: {}
+    tolerations: []
+    affinity: {}
+
+  # packetai agent to collect node level metrics (cpu, node, container, pods), this is a daemonset
+  node:
+    image:
+      repository: public.ecr.aws/packetai/packetai-agent-k8s-ds
+      pullPolicy: Always
+      tag: latest
+    resources: 
+      limits:
+        memory: 600Mi
+      requests:
+        cpu: 300m
+        memory: 300Mi
+    # schedule packetai agent to below selected nodes
+    nodeSelector: {}
+    tolerations: []
+    affinity: {}
+    podSecurityContext: {}
+    securityContext: {}
+      # capabilities:
+      #   drop:
+      #   - ALL
+      # readOnlyRootFilesystem: true
+      # runAsNonRoot: true
+      # runAsUser: 1000
+
+
+
+

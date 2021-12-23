@@ -1,0 +1,5 @@
+# Chart dependencies
+**/charts/*.tgz
+# OSX trash
+.DS_Store
+charts/**/Chart.lock
