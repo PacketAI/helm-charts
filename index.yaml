@@ -3,6 +3,21 @@ entries:
   packetai-agent:
   - apiVersion: v2
     appVersion: 1.11.0
+    created: "2021-12-23T17:14:24.518847546Z"
+    dependencies:
+    - condition: global.kubeStateMetrics.enabled
+      name: kube-state-metrics
+      repository: https://prometheus-community.github.io/helm-charts
+      version: ~4.1.1
+    description: A Helm chart for Kubernetes
+    digest: 0aa86ae16a901ec4284f386dd7d42310277152fed22d4dcec50ccae263f83683
+    name: packetai-agent
+    type: application
+    urls:
+    - https://github.com/PacketAI/helm-charts/releases/download/packetai-agent-1.1.1/packetai-agent-1.1.1.tgz
+    version: 1.1.1
+  - apiVersion: v2
+    appVersion: 1.11.0
     created: "2021-12-23T16:42:44.33804519Z"
     dependencies:
     - condition: global.kubeStateMetrics.enabled
