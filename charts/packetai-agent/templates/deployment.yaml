@@ -20,8 +20,40 @@ spec:
       hostNetwork: true
       dnsPolicy: ClusterFirstWithHostNet
       containers:
-      - name: pai-cluster-agent
+      - name: pai-cluster-topo
         image: "{{ .Values.packetai.cluster.image.repository }}:{{ .Values.packetai.cluster.image.tag | default .Chart.AppVersion }}"
+        imagePullPolicy: {{ .Values.packetai.cluster.image.pullPolicy }}
+        env:
+        {{- if .Values.global.kubeStateMetrics.enabled }}
+        - name: KUBERNETES_STATE_METRICS_ENDPOINT
+          value: {{ (printf "%s-kube-state-metrics:8080" (.Release.Name)) }}
+        {{- else }}  
+        - name: KUBERNETES_STATE_METRICS_ENDPOINT
+          value: {{ required "global.kubeStateMetrics.url is compulsory to collect metrics" .Values.global.kubeStateMetrics.url }}
+        {{- end }}
+        - name: KUBERNETES_PROXY_ENDPOINT
+          value: {{ .Values.packetai.k8sProxyEndPoint }}
+        - name: APIDEVURL
+          value: {{ required "packetai.apiUrl is compulsory" .Values.packetai.apiUrl }}
+        - name: X_PAI_TOKEN
+          value: {{ required "packetai.xPaiToken is compulsory" .Values.packetai.xPaiToken }}
+        - name: PAI_API_KEY
+          value: {{ required "packetai.paiApiKey is compulsory" .Values.packetai.paiApiKey }}
+        - name: CLUSTER_NAME
+          value:  {{ required "packetai.clusterName is compulsory" .Values.packetai.clusterName }}
+        - name: NODENAME
+          valueFrom:
+            fieldRef:
+              fieldPath: spec.nodeName
+        securityContext:
+          runAsUser: 0
+          # If using Red Hat OpenShift uncomment this:
+          #privileged: true
+        resources:
+            {{- toYaml .Values.packetai.cluster.resources | nindent 12 }}
+      - name: pai-cluster-agent
+        image: "{{ .Values.packetai.node.image.repository }}:{{ .Values.packetai.node.image.tag | default .Chart.AppVersion }}"
+        args: ["-level", "cluster"]
         imagePullPolicy: {{ .Values.packetai.cluster.image.pullPolicy }}
         env:
         {{- if .Values.global.kubeStateMetrics.enabled }}
