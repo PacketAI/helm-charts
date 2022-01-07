@@ -22,11 +22,7 @@ spec:
       - name: pai-node-agent
         image: "{{ .Values.packetai.node.image.repository }}:{{ .Values.packetai.node.image.tag | default .Chart.AppVersion }}"
         imagePullPolicy: {{ .Values.packetai.node.image.pullPolicy }}
-        args: [
-          "-c", "/etc/packetai-agent.yml",
-          "-e",
-          "-system.hostfs=/hostfs",
-        ]
+        args: ["-level", "host"]
         env:
         {{- if .Values.global.kubeStateMetrics.enabled }}
         - name: KUBERNETES_STATE_METRICS_ENDPOINT
