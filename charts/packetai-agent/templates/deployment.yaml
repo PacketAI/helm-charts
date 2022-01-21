@@ -42,9 +42,9 @@ spec:
         - name: CLUSTER_NAME
           value:  {{ required "global.clusterName is compulsory" .Values.global.clusterName }}
         - name: BLACK_LIST_CONTAINERS_NAME_PATTERN
-          value:  {{ required "global.blacklistContainers is compulsory" .Values.global.blacklistContainers }}
+          value:  {{ .Values.global.blacklistContainers }}
         - name: WHITE_LIST_NAMESPACES
-          value:  {{ required "global.whitelistNamespaces is compulsory" .Values.global.whitelistNamespaces }}
+          value:  {{ .Values.global.whitelistNamespaces }}
         - name: NODENAME
           valueFrom:
             fieldRef:
