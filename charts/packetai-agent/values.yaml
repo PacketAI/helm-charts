@@ -3,64 +3,54 @@
 # Declare variables to be passed into your templates.
 
 
-#kube-state-metrics customization values goes here
+# kube-state-metrics helm chart values goes here
 kube-state-metrics: {}
+
 global:
+  xPaiToken: ""
+  paiApiKey: ""
+  apiUrl: ""
+  k8sProxyEndPoint: "localhost:10249"
+  clusterName: ""
+  logsEnable: true
+  whitelistNamespaces: ""
+  blacklistContainers: ""
   kubeStateMetrics:
     # if enabled we will use new kube-state-metrics deployed with this chart.
     # otherwise we will use url provided for existing kube-state-metrics
     enabled: true
     url: ""
 
-packetai:
-  imagePullSecrets: []
-  # packetai agent to collect cluster level metrics (deployments, volumes, replicaset, pods, containers, sts etc..)
-  xPaiToken: ""
-  paiApiKey: ""
-  apiUrl: ""
-  k8sProxyEndPoint: "localhost:10249"
-  clusterName: ""
+# packetai agent to collect cluster level metrics (deployments, volumes, replicaset, pods, containers, sts etc..)
+clusterAgent:
+  image:
+    repository: public.ecr.aws/packetai/packetai-agent-k8s-deploy
+    pullPolicy: Always
+    tag: v1.13.2-ms-latest
+  resources:
+    limits:
+      memory: 600Mi
+    requests:
+      cpu: 300m
+      memory: 300Mi
+  nodeSelector: {}
+  tolerations: []
+  affinity: {}
 
-  cluster:
-    image:
-      repository: public.ecr.aws/packetai/packetai-agent-k8s-deploy
-      pullPolicy: Always
-      tag: latest
-    resources:
-      limits:
-        memory: 600Mi
-      requests:
-        cpu: 300m
-        memory: 300Mi
-    nodeSelector: {}
-    tolerations: []
-    affinity: {}
-
-  # packetai agent to collect node level metrics (cpu, node, container, pods), this is a daemonset
-  node:
-    image:
-      repository: public.ecr.aws/packetai/packetai-agent-k8s-ds
-      pullPolicy: Always
-      tag: latest
-    resources: 
-      limits:
-        memory: 600Mi
-      requests:
-        cpu: 300m
-        memory: 300Mi
-    # schedule packetai agent to below selected nodes
-    nodeSelector: {}
-    tolerations: []
-    affinity: {}
-    podSecurityContext: {}
-    securityContext: {}
-      # capabilities:
-      #   drop:
-      #   - ALL
-      # readOnlyRootFilesystem: true
-      # runAsNonRoot: true
-      # runAsUser: 1000
-
-
-
-
+# packetai agent to collect node level metrics (cpu, node, container, pods), this is a daemonset
+nodeAgent:
+  image:
+    repository: public.ecr.aws/packetai/packetai-agent-k8s-ds
+    pullPolicy: Always
+    tag: v1.13.2-ms-latest
+  resources: 
+    limits:
+      memory: 600Mi
+    requests:
+      cpu: 300m
+      memory: 300Mi
+  # schedule packetai agent to below selected nodes
+  nodeSelector: {}
+  tolerations: []
+  affinity: {}
+  podSecurityContext: {}
