@@ -32,7 +32,7 @@ spec:
           value: {{ required "global.kubeStateMetrics.url is compulsory to collect metrics" .Values.global.kubeStateMetrics.url }}
         {{- end }}
         - name: KUBERNETES_PROXY_ENDPOINT
-          value: {{ .Values.packetai.k8sProxyEndPoint }}
+          value: {{ .Values.global.k8sProxyEndPoint }}
         - name: APIDEVURL
           value: {{ required "global.apiUrl is compulsory" .Values.global.apiUrl }}
         - name: X_PAI_TOKEN
@@ -68,7 +68,7 @@ spec:
           value: {{ required "global.kubeStateMetrics.url is compulsory to collect metrics" .Values.global.kubeStateMetrics.url }}
         {{- end }}
         - name: KUBERNETES_PROXY_ENDPOINT
-          value: {{ .Values.packetai.k8sProxyEndPoint }}
+          value: {{ .Values.global.k8sProxyEndPoint }}
         - name: APIDEVURL
           value: {{ required "global.apiUrl is compulsory" .Values.global.apiUrl }}
         - name: X_PAI_TOKEN
