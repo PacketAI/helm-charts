@@ -22,7 +22,7 @@ global:
     url: ""
 
 # packetai agent to collect cluster level metrics (deployments, volumes, replicaset, pods, containers, sts etc..)
-cluster:
+clusterAgent:
   image:
     repository: public.ecr.aws/packetai/packetai-agent-k8s-deploy
     pullPolicy: Always
@@ -38,7 +38,7 @@ cluster:
   affinity: {}
 
 # packetai agent to collect node level metrics (cpu, node, container, pods), this is a daemonset
-node:
+nodeAgent:
   image:
     repository: public.ecr.aws/packetai/packetai-agent-k8s-ds
     pullPolicy: Always
