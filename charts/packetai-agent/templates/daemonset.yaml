@@ -20,8 +20,8 @@ spec:
       dnsPolicy: ClusterFirstWithHostNet
       containers:
       - name: pai-node-agent
-        image: "{{ .Values.packetai.node.image.repository }}:{{ .Values.packetai.node.image.tag | default .Chart.AppVersion }}"
-        imagePullPolicy: {{ .Values.packetai.node.image.pullPolicy }}
+        image: "{{ .Values.nodeAgent.image.repository }}:{{ .Values.nodeAgent.image.tag | default .Chart.AppVersion }}"
+        imagePullPolicy: {{ .Values.nodeAgent.image.pullPolicy }}
         args: ["-level", "host"]
         env:
         {{- if .Values.global.kubeStateMetrics.enabled }}
@@ -34,13 +34,24 @@ spec:
         - name: KUBERNETES_PROXY_ENDPOINT
           value: {{ .Values.packetai.k8sProxyEndPoint }}
         - name: APIDEVURL
-          value: {{ required "packetai.apiUrl is compulsory" .Values.packetai.apiUrl }}
+          value: {{ required "global.apiUrl is compulsory" .Values.global.apiUrl }}
         - name: X_PAI_TOKEN
-          value: {{ required "packetai.xPaiToken is compulsory" .Values.packetai.xPaiToken }}
+          value: {{ required "global.xPaiToken is compulsory" .Values.global.xPaiToken }}
         - name: PAI_API_KEY
-          value: {{ required "packetai.paiApiKey is compulsory" .Values.packetai.paiApiKey }}
+          value: {{ required "global.paiApiKey is compulsory" .Values.global.paiApiKey }}
         - name: CLUSTER_NAME
-          value:  {{ required "packetai.clusterName is compulsory" .Values.packetai.clusterName }}
+          value:  {{ required "global.clusterName is compulsory" .Values.global.clusterName }}
+        {{- if .Values.global.logsEnable }}  
+        - name: FILEBEAT
+          value:  "ON"
+        {{- else }}
+        - name: FILEBEAT
+          value:  "OFF"
+        {{- end}}
+        - name: BLACK_LIST_CONTAINERS_NAME_PATTERN
+          value:  {{ required "global.blacklistContainers is compulsory" .Values.global.blacklistContainers }}
+        - name: WHITE_LIST_NAMESPACES
+          value:  {{ required "global.whitelistNamespaces is compulsory" .Values.global.whitelistNamespaces }}
         - name: NODENAME
           valueFrom:
             fieldRef:
@@ -50,22 +61,22 @@ spec:
           # If using Red Hat OpenShift uncomment this:
           #privileged: true
         resources:
-            {{- toYaml .Values.packetai.node.resources | nindent 12 }}
+            {{- toYaml .Values.nodeAgent.resources | nindent 12 }}
         volumeMounts:
         - name: varlibdockercontainers
           mountPath: /var/lib/docker/containers
           readOnly: true
         - name: data
           mountPath: /etc/packetai
-      {{- with .Values.packetai.node.nodeSelector }}
+      {{- with .Values.nodeAgent.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{- with .Values.packetai.node.affinity }}
+      {{- with .Values.nodeAgent.affinity }}
       affinity:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-      {{- with .Values.packetai.node.tolerations }}
+      {{- with .Values.nodeAgent.tolerations }}
       tolerations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
