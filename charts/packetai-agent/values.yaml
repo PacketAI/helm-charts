@@ -26,12 +26,12 @@ clusterAgent:
   image:
     repository: public.ecr.aws/packetai/packetai-agent-k8s-deploy
     pullPolicy: Always
-    tag: v1.13.2-ms-latest
+    tag: v1.13.3-ms-latest
   resources:
     limits:
       memory: 600Mi
     requests:
-      cpu: 300m
+      cpu: 200m
       memory: 300Mi
   nodeSelector: {}
   tolerations: []
@@ -42,12 +42,12 @@ nodeAgent:
   image:
     repository: public.ecr.aws/packetai/packetai-agent-k8s-ds
     pullPolicy: Always
-    tag: v1.13.2-ms-latest
+    tag: v1.13.3-ms-latest
   resources: 
     limits:
       memory: 600Mi
     requests:
-      cpu: 300m
+      cpu: 200m
       memory: 300Mi
   # schedule packetai agent to below selected nodes
   nodeSelector: {}
