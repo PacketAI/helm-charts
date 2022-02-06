@@ -23,14 +23,14 @@ You can then run `helm search repo packetai` to see the charts.
 
 ### Whitelisting namespaces 
 - PacketAI agent supports to monitor all resources in a particular namespace, for example if we have the following k8s namespaces, kube-sytem, customns1, customns2, customns3
-- If we want to monitor only customns1 and customns2. we could use global.whitelistNamespaces="customns1,customns2". This will ignore all the other namespaces. 
+- If we want to monitor only customns1 and customns2. we could use `--set global.whitelistNamespaces="customns1\,customns2"`, this will ignore all the other namespaces. 
 - This configuration only works for namespace level metrics, and logs. For cluster level metrics like api-server, kube-proxy will be collected by PacketAI agent.
 ### Blacklisting of containers
 - PacketAI agent supports to drop metrics and logs of a particular k8s containers
-- If we don't want monitor k8s conatiner istio-proxy, secret-container1, we could use global.blacklistContainers="istio-proxy,secret-container1", we will drop the all logs and metrics of kube containers matching istio-proxy or secret-container1
+- If we don't want monitor k8s conatiner istio-proxy, secret-container1, we could use `--set global.blacklistContainers="istio-proxy\,secret-container1"`, we will drop the all logs and metrics of kube containers matching istio-proxy or secret-container1
 ### kube state metrics
 - PacketAI agent helm chart depends on kube state metrics helm chart. We could use existing kube state metrics on k8s cluster.
-- we could disable the installing of kube state metrics with global.kubeStateMetrics.enabled=false and setting the existing kube state metrics URL to global.kubeStateMetrics.url="kube-state-metrics-existin-service:8080"
+- we could disable the installing of kube state metrics with `--set global.kubeStateMetrics.enabled=false` and setting the existing kube state metrics URL to global.kubeStateMetrics.url="kube-state-metrics-existin-service:8080"
 
 ## Contributing
 
