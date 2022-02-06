@@ -4,7 +4,24 @@
 
 
 # kube-state-metrics helm chart values goes here
-kube-state-metrics: {}
+kube-state-metrics:
+  collectors:
+  - cronjobs
+  - daemonsets
+  - deployments
+  - jobs
+  - namespaces
+  - nodes
+  - persistentvolumeclaims
+  - persistentvolumes
+  - pods
+  - replicasets
+  - replicationcontrollers
+  - resourcequotas
+  - services
+  - statefulsets
+  - storageclasses
+  - volumeattachments
 
 global:
   xPaiToken: ""
@@ -53,4 +70,3 @@ nodeAgent:
   nodeSelector: {}
   tolerations: []
   affinity: {}
-  podSecurityContext: {}
