@@ -1,0 +1,22 @@
+{
+  "$schema": "http://json-schema.org/schema#",
+  "type": "object",
+  "required": [
+    "global"
+  ],
+  "properties": {
+    "global": {
+      "type": "object",
+      "required": [
+        "clusterName"
+
+      ],
+      "properties": {
+        "clusterName": {
+          "type": "string",
+          "pattern": "^[a-z]+$"
+        }
+      }
+    }
+  }
+}
