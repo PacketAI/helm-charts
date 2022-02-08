@@ -20,7 +20,7 @@ spec:
       dnsPolicy: ClusterFirstWithHostNet
       containers:
       - name: pai-node-agent
-        image: "{{ .Values.nodeAgent.image.repository }}:{{ .Values.nodeAgent.image.tag | default .Chart.AppVersion }}"
+        image: "{{ .Values.nodeAgent.image.repository }}:{{ .Values.global.imageTag | default .Chart.AppVersion }}"
         imagePullPolicy: {{ .Values.nodeAgent.image.pullPolicy }}
         args: ["-level", "host"]
         env:

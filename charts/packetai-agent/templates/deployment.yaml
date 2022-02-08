@@ -21,8 +21,8 @@ spec:
       dnsPolicy: ClusterFirstWithHostNet
       containers:
       - name: pai-cluster-topo
-        image: "{{ .Values.clusterAgent.image.repository }}:{{ .Values.clusterAgent.image.tag | default .Chart.AppVersion }}"
-        imagePullPolicy: {{ .Values.clusterAgent.image.pullPolicy }}
+        image: "{{ .Values.clusterAgent.topo.image.repository }}:{{ .Values.global.imageTag | default .Chart.AppVersion }}"
+        imagePullPolicy: {{ .Values.clusterAgent.topo.image.pullPolicy }}
         env:
         {{- if .Values.global.kubeStateMetrics.enabled }}
         - name: KUBERNETES_STATE_METRICS_ENDPOINT
@@ -54,11 +54,11 @@ spec:
           # If using Red Hat OpenShift uncomment this:
           #privileged: true
         resources:
-            {{- toYaml .Values.clusterAgent.resources | nindent 12 }}
+            {{- toYaml .Values.clusterAgent.topo.resources | nindent 10 }}
       - name: pai-cluster-agent
-        image: "{{ .Values.nodeAgent.image.repository }}:{{ .Values.nodeAgent.image.tag | default .Chart.AppVersion }}"
+        image: "{{ .Values.clusterAgent.metrics.image.repository }}:{{ .Values.global.imageTag | default .Chart.AppVersion }}"
         args: ["-level", "cluster"]
-        imagePullPolicy: {{ .Values.clusterAgent.image.pullPolicy }}
+        imagePullPolicy: {{ .Values.clusterAgent.metrics.image.pullPolicy }}
         env:
         {{- if .Values.global.kubeStateMetrics.enabled }}
         - name: KUBERNETES_STATE_METRICS_ENDPOINT
@@ -86,7 +86,7 @@ spec:
           # If using Red Hat OpenShift uncomment this:
           #privileged: true
         resources:
-            {{- toYaml .Values.clusterAgent.resources | nindent 12 }}
+            {{- toYaml .Values.clusterAgent.metrics.resources | nindent 10 }}
       {{- with .Values.clusterAgent.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
