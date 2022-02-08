@@ -32,6 +32,7 @@ global:
   logsEnable: true
   whitelistNamespaces: ""
   blacklistContainers: ""
+  imageTag: v1.13.4-ms-latest
   kubeStateMetrics:
     # if enabled we will use new kube-state-metrics deployed with this chart.
     # otherwise we will use url provided for existing kube-state-metrics
@@ -40,16 +41,26 @@ global:
 
 # packetai agent to collect cluster level metrics (deployments, volumes, replicaset, pods, containers, sts etc..)
 clusterAgent:
-  image:
-    repository: public.ecr.aws/packetai/packetai-agent-k8s-deploy
-    pullPolicy: Always
-    tag: v1.13.3-ms-latest
-  resources:
-    limits:
-      memory: 600Mi
-    requests:
-      cpu: 200m
-      memory: 300Mi
+  topo:
+    image:
+      repository: public.ecr.aws/packetai/packetai-agent-k8s-deploy
+      pullPolicy: Always
+    resources:
+      limits:
+        memory: 300Mi
+      requests:
+        cpu: 100m
+        memory: 150Mi
+  metrics:
+    image:
+      repository: public.ecr.aws/packetai/packetai-agent-k8s-ds
+      pullPolicy: Always
+    resources:
+      limits:
+        memory: 1000Mi
+      requests:
+        cpu: 500m
+        memory: 500Mi
   nodeSelector: {}
   tolerations: []
   affinity: {}
@@ -59,7 +70,6 @@ nodeAgent:
   image:
     repository: public.ecr.aws/packetai/packetai-agent-k8s-ds
     pullPolicy: Always
-    tag: v1.13.3-ms-latest
   resources: 
     limits:
       memory: 600Mi
