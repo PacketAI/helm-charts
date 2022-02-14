@@ -52,6 +52,8 @@ spec:
           value:  {{ .Values.global.blacklistContainers }}
         - name: WHITE_LIST_NAMESPACES
           value:  {{ .Values.global.whitelistNamespaces }}
+        - name: CONTAINER_RUNTIME
+          value:  {{ .Values.global.logs.containerRuntime }}
         - name: NODENAME
           valueFrom:
             fieldRef:
@@ -63,9 +65,18 @@ spec:
         resources:
             {{- toYaml .Values.nodeAgent.resources | nindent 12 }}
         volumeMounts:
+        {{ if .Values.global.logs.containerRuntime "docker" }}
         - name: varlibdockercontainers
           mountPath: /var/lib/docker/containers
           readOnly: true
+        {{ else if .Values.global.logs.containerRuntime "containerd" }}
+        - name: varlogcontainers
+          mountPath: /var/log/containers
+          readOnly: true
+        - name: varlogpods
+          mountPath: /var/log/pods
+          readOnly: true
+        {{- end }}
         - name: data
           mountPath: /etc/packetai
       {{- with .Values.nodeAgent.nodeSelector }}
@@ -81,9 +92,18 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       volumes:
+      {{ if .Values.global.logs.containerRuntime "docker" }}
       - name: varlibdockercontainers
         hostPath:
-          path: /var/lib/docker/containers
+          path: {{ .Values.global.logs.containersPath }}
+      {{ else if .Values.global.logs.containerRuntime "containerd" }}
+      - name: varlogcontainers
+        hostPath:
+          path: {{ .Values.global.logs.containersPath }}
+      - name: varlogpods
+        hostPath:
+          path: {{ .Values.global.logs.podsPath }}
+      {{- end }}
       - name: data
         hostPath:
           # When metricbeat runs as non-root user, this directory needs to be writable by group (g+w)
