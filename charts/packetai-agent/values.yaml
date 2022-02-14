@@ -29,6 +29,11 @@ global:
   apiUrl: ""
   k8sProxyEndPoint: "localhost:10249"
   clusterName: ""
+  logs:
+    enabled: true
+    containerRuntime: docker
+    containersPath: /var/lib/docker/containers
+    podsPath: /var/log/pods #valid only for containerd runtime only
   logsEnable: true
   whitelistNamespaces: ""
   blacklistContainers: ""
