@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: DaemonSet
 metadata:
   name: {{ template "packetai-agent.fullname" . }}
-  namespace: kube-system
+  namespace: {{ template "packetai-agent.namespace" . }}
   labels:
     k8s-app: {{ template "packetai-agent.fullname" . }}
 spec:
