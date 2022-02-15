@@ -23,6 +23,8 @@ kube-state-metrics:
   - storageclasses
   - volumeattachments
 
+namespaceOverride: ""
+
 global:
   xPaiToken: ""
   paiApiKey: ""

@@ -5,7 +5,7 @@ metadata:
 subjects:
 - kind: ServiceAccount
   name: {{ template "packetai-agent.fullname" . }}
-  namespace: kube-system
+  namespace: {{ template "packetai-agent.namespace" . }}
 roleRef:
   kind: ClusterRole
   name: {{ template "packetai-agent.fullname" . }}
