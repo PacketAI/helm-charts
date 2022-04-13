@@ -39,7 +39,7 @@ global:
   logsEnable: true
   whitelistNamespaces: ""
   blacklistContainers: ""
-  imageTag: v1.13.12-ms-latest
+  imageTag: v1.14.0-ms-latest
   kubeStateMetrics:
     # if enabled we will use new kube-state-metrics deployed with this chart.
     # otherwise we will use url provided for existing kube-state-metrics
