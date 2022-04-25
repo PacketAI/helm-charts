@@ -26,6 +26,7 @@ kube-state-metrics:
 namespaceOverride: ""
 
 global:
+  useSecret: ""
   xPaiToken: ""
   paiApiKey: ""
   apiUrl: ""

@@ -23,6 +23,11 @@ spec:
         image: "{{ .Values.nodeAgent.image.repository }}:{{ .Values.global.imageTag | default .Chart.AppVersion }}"
         imagePullPolicy: {{ .Values.nodeAgent.image.pullPolicy }}
         args: ["-level", "host"]
+        {{- if .Values.global.useSecret }}
+        envFrom:
+        - secretRef:
+            name: {{ .Values.global.useSecret }}
+        {{- end }}
         env:
         {{- if .Values.global.kubeStateMetrics.enabled }}
         - name: KUBERNETES_STATE_METRICS_ENDPOINT
@@ -35,10 +40,12 @@ spec:
           value: {{ .Values.global.k8sProxyEndPoint }}
         - name: APIDEVURL
           value: {{ required "global.apiUrl is compulsory" .Values.global.apiUrl }}
+        {{- if not .Values.global.useSecret }}
         - name: X_PAI_TOKEN
           value: {{ required "global.xPaiToken is compulsory" .Values.global.xPaiToken }}
         - name: PAI_API_KEY
           value: {{ required "global.paiApiKey is compulsory" .Values.global.paiApiKey }}
+        {{- end }}
         - name: CLUSTER_NAME
           value:  {{ required "global.clusterName is compulsory" .Values.global.clusterName }}
         {{- if .Values.global.logs.enabled }}  
