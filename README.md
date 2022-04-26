@@ -21,6 +21,11 @@ You can then run `helm search repo packetai` to see the charts.
 
 ## Configuration
 
+### k8s secret for storing PacketAI tokens
+- The scret needs to contain the following keys with their respective values. `X_PAI_TOKEN` and `PAI_API_KEY`
+- `kubectl create secret generic k8s-secret --from-literal=X_PAI_TOKEN=abcd --from-literal=PAI_API_KEY=123abcd -n kube-system`
+- K8s secrets are namespace specific, they needs to be created in the same namespace where we deploy the packetai agent.
+
 ### Whitelisting namespaces 
 - PacketAI agent supports to monitor all resources in a particular namespace, for example if we have the following k8s namespaces, kube-sytem, customns1, customns2, customns3
 - If we want to monitor only customns1 and customns2. we could use `--set global.whitelistNamespaces="customns1\,customns2"`, this will ignore all the other namespaces. 
