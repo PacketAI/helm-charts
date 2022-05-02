@@ -72,13 +72,49 @@ clusterAgent:
   nodeSelector: {}
   tolerations: []
   affinity: {}
-
+  # metricConfig will be used to configure the additional processors for packetai metric agent
+  # IMPORANT: FOR PACKETAI, PLEASE DO NOT RENAME THE KUBERNETES META DATA FIELDS
+  # We support for the moment only the following processors: add_fields, add_tags, drop_event, drop_fields, rename
+  # Following is an example of metricConfig
+  # processor reference:https://www.elastic.co/guide/en/beats/metricbeat/current/defining-processors.html#processors
+  metricConfig:
+    global_config:
+#      processors:
+#        - add_fields:
+#          target: test_fields1
+#          fields:
+#            name: fields1
+#            id: fields_value_1
+#        - add_fields:
+#            target: test_fields2
+#            fields:
+#              name: fields2
+#              id: fields_value_2
+#        - add_tags:
+#            tags: [ web, production ]
+#            target: test_fields
+#        - drop_event:
+#            when:
+#              equals:
+#                kubernetes.namespace: dgraph
+#        - drop_fields:
+#            when:
+#              equals:
+#                test_fields1.name: fields1
+#            fields: [ test_fields2 ]
+#            ignore_missing: false
+#        - rename:
+#            fields:
+#              - from: test_fields1
+#                to: test_fields3
+#            ignore_missing: false
+#            fail_on_error: true
 # packetai agent to collect node level metrics (cpu, node, container, pods), this is a daemonset
 nodeAgent:
   image:
     repository: public.ecr.aws/packetai/packetai-agent-k8s-ds
     pullPolicy: Always
-  resources: 
+  resources:
     limits:
       memory: 600Mi
     requests:
@@ -88,3 +124,75 @@ nodeAgent:
   nodeSelector: {}
   tolerations: []
   affinity: {}
+  # metricConfig will be used to configure the additional processors for packetai metric agent
+  # IMPORANT: FOR PACKETAI, PLEASE DO NOT RENAME THE KUBERNETES META DATA FIELDS
+  # We support for the moment only the following processors: add_fields, add_tags, drop_event, drop_fields, rename
+  # processor reference:https://www.elastic.co/guide/en/beats/metricbeat/current/defining-processors.html#processors
+  # Following is an example of metricConfig
+  metricConfig:
+    global_config:
+#      processors:
+#        - add_fields:
+#          target: test_fields1
+#          fields:
+#            name: fields1
+#            id: fields_value_1
+#        - add_fields:
+#            target: test_fields2
+#            fields:
+#              name: fields2
+#              id: fields_value_2
+#        - add_tags:
+#            tags: [ web, production ]
+#            target: test_fields
+#        - drop_event:
+#            when:
+#              equals:
+#                kubernetes.namespace: dgraph
+#        - drop_fields:
+#            when:
+#              equals:
+#                test_fields1.name: fields1
+#            fields: [ test_fields2 ]
+#            ignore_missing: false
+#        - rename:
+#            fields:
+#              - from: test_fields1
+#                to: test_fields3
+#            ignore_missing: false
+#            fail_on_error: true
+
+  # logConfig will be used to configure the additional processors for packetai log agent
+  # IMPORANT: FOR PACKETAI, PLEASE DO NOT RENAME THE KUBERNETES META DATA FIELDS
+  # We support for the moment only the following processors: add_fields, add_tags, drop_event, drop_fields, rename
+  # We support to exclude container log message: https://www.elastic.co/guide/en/beats/filebeat/current/filebeat-input-log.html#filebeat-input-log-exclude-lines
+  # processor reference:  https://www.elastic.co/guide/en/beats/filebeat/current/defining-processors.html#processors
+  # Following is an example of logConfig
+  logConfig:
+    global_config:
+#      exclude_lines: [ "status=200 +uri=(/|/health|/api/health|/api/ping) +action=" ]
+#      processors:
+#        - add_fields:
+#          target: test_fields1
+#          fields:
+#            name: fields1
+#            id: fields_value_1
+#        - add_tags:
+#            tags: [ web, production ]
+#            target: test_fields
+#        - drop_event:
+#            when:
+#              equals:
+#                kubernetes.namespace: dgraph
+#        - drop_fields:
+#            when:
+#              equals:
+#                test_fields1.name: fields1
+#            fields: [ test_fields2 ]
+#            ignore_missing: false
+#        - rename:
+#            fields:
+#              - from: test_fields1
+#                to: test_fields3
+#            ignore_missing: false
+#            fail_on_error: true

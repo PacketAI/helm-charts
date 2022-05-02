@@ -88,6 +88,12 @@ spec:
           mountPath: /var/log/pods
           readOnly: true
         {{- end }}
+        - name: global-config
+          mountPath: /etc/packetai/global-log-config.yml
+          subPath: global-log-config.yml
+        - name: global-config
+          mountPath: /etc/packetai/global-metric-config.yml
+          subPath: global-metric-config.yml
         - name: data
           mountPath: /etc/packetai
       {{- with .Values.nodeAgent.nodeSelector }}
@@ -115,6 +121,9 @@ spec:
         hostPath:
           path: {{ .Values.global.logs.podsPath }}
       {{- end }}
+      - name: global-config
+        configMap:
+          name: {{ template "packetai-agent.fullname" . }}-node-agent-configmap
       - name: data
         hostPath:
           # When metricbeat runs as non-root user, this directory needs to be writable by group (g+w)
