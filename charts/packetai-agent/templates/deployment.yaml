@@ -109,6 +109,10 @@ spec:
           #privileged: true
         resources:
             {{- toYaml .Values.clusterAgent.metrics.resources | nindent 10 }}
+        volumeMounts:
+          - name: global-config
+            mountPath: /etc/packetai/global-metric-config.yml
+            subPath: global-metric-config.yml
       {{- with .Values.clusterAgent.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
@@ -121,3 +125,7 @@ spec:
       tolerations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
+      volumes:
+      - name: global-config
+        configMap:
+          name: {{ template "packetai-agent.fullname" . }}-cluster-agent-configmap
