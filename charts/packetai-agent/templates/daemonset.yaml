@@ -55,10 +55,14 @@ spec:
         - name: FILEBEAT
           value:  "OFF"
         {{- end}}
+        {{- if .Values.global.blacklistContainers }}
         - name: BLACK_LIST_CONTAINERS_NAME_PATTERN
           value:  {{ .Values.global.blacklistContainers }}
+        {{- end }}
+        {{- if .Values.global.whitelistNamespaces }}
         - name: WHITE_LIST_NAMESPACES
           value:  {{ .Values.global.whitelistNamespaces }}
+        {{- end }}
         - name: CONTAINER_RUNTIME
           value:  {{ .Values.global.logs.containerRuntime }}
         - name: NODENAME
